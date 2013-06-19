@@ -1,4 +1,4 @@
 OQToolsUI
 =========
 
-Tools &amp; UI written for openquake
+Tools and UI written for openquake
