@@ -1,6 +1,4 @@
-__author__ = 'orhan'
-
-
+from panels.asciiconverterwindow import AsciiConverterWindow
 from PyQt4 import QtGui as gui
 from panels.converterwindow import ConverterWindow
 from panels.inputfilegenwindow import InputFileGeneratorWindow
@@ -21,7 +19,7 @@ class MainWindow():
 
     def initMenu(self):
         menuBar = self.__mainWindow.menuBar()
-        menu = menuBar.addMenu('Menu')
+        menu = menuBar.addMenu('Input')
 
         action = gui.QAction('&Convert Source Models', self.__mainWindow)
         action.triggered.connect(self.showConverterWindow)
@@ -30,12 +28,20 @@ class MainWindow():
         action = gui.QAction('&Generate Input Files', self.__mainWindow)
         action.triggered.connect(self.showInputFileGeneratorWindow)
         menu.addAction(action)
-        
+
+        menu = menuBar.addMenu('Result')
+        action = gui.QAction('&Convert Hazard Maps to ASCII', self.__mainWindow)
+        action.triggered.connect(self.showAsciiConverterWindow)
+        menu.addAction(action)
+
     def showConverterWindow(self):
         self.__mainWindow.setCentralWidget(ConverterWindow(parent=self.__mainWindow))
-        
+
     def showInputFileGeneratorWindow(self):
         self.__mainWindow.setCentralWidget(InputFileGeneratorWindow(parent=self.__mainWindow))
-    
+
+    def showAsciiConverterWindow(self):
+        self.__mainWindow.setCentralWidget(AsciiConverterWindow(parent=self.__mainWindow))
+
     def show(self):
         self.__mainWindow.show()
