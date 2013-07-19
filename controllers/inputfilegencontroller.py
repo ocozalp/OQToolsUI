@@ -13,7 +13,7 @@ def save(parameters, targetFile):
 
 def load(sourceFile):
     f = open(sourceFile, 'r')
-    parameters = {}
+    parameters = dict()
     for line in f.readlines():
         index = line.index('=')
         if index >= 0:
