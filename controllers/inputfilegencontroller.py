@@ -1,6 +1,3 @@
-__author__ = 'orhan'
-
-
 import os
 
 
@@ -26,7 +23,7 @@ def load(sourceFile):
     return parameters
 
 
-def execute(parameters, targetDir, separate):
+def execute(parameters, targetDir):
     if 'name' not in parameters or len(parameters['name'].strip()) == 0:
         raise Exception('Name parameter is empty')
 
@@ -36,19 +33,9 @@ def execute(parameters, targetDir, separate):
     if not os.path.exists(newDir):
         os.makedirs(newDir)
 
-    if separate:
-        for gmpe in parameters['gmpes']:
-            gmpeDir = os.path.join(newDir, gmpe.name)
-            if not os.path.exists(gmpeDir):
-                os.makedirs(gmpeDir)
-
-            jobIniContent = getJobIniContent(parameters, 'output/' + runName + '/' + gmpe.name)
-            writeGmpeLogicTree(os.path.join(gmpeDir, 'gmpe_logic_tree.xml'), [gmpe])
-            writeJobIni(os.path.join(gmpeDir, 'job.ini'), jobIniContent)
-    else:
-        jobIniContent = getJobIniContent(parameters, 'output/'+runName)
-        writeGmpeLogicTree(os.path.join(newDir, 'gmpe_logic_tree.xml'), parameters['gmpes'])
-        writeJobIni(os.path.join(newDir, 'job.ini'), jobIniContent)
+    jobIniContent = getJobIniContent(parameters, 'output/'+runName)
+    writeGmpeLogicTree(os.path.join(newDir, 'gmpe_logic_tree.xml'), parameters['gmpes'])
+    writeJobIni(os.path.join(newDir, 'job.ini'), jobIniContent)
 
 
 def getJobIniContent(parameters, outDir):
