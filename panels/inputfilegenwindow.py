@@ -2,7 +2,6 @@ __author__ = 'orhan'
 
 
 from PyQt4 import QtGui as gui
-from PyQt4 import QtCore as core
 from controllers.inputfilegencontroller import save, load, execute
 from os.path import split
 from panels import BaseWindow
@@ -38,10 +37,6 @@ class InputFileGeneratorWindow(BaseWindow):
         self.__description = NamedTextArea(topFrame)
         self.__description.initGui(topFrame, 'Description', 10, 90)
 
-        self.__separateRuns = gui.QCheckBox(topFrame)
-        self.__separateRuns.setText('Separate Runs?')
-        self.__separateRuns.setGeometry(10, 130, 150, 30)
-    
     def __initGmpeFrame(self):
         gmpeFrame = gui.QFrame(self)
         gmpeFrame.setFrameStyle(gui.QFrame.Box)
@@ -76,11 +71,12 @@ class InputFileGeneratorWindow(BaseWindow):
                     return
 
             try:
-                res = float(str(gui.QInputDialog.getText(self.__sourceGmpeList, 'Weight', 'Wight of GMPE?')[0]))
+                inputDialog = gui.QInputDialog()
+                res = float(str(inputDialog.getText(self.__sourceGmpeList, 'Weight', 'Weight of GMPE?')[0]))
                 g = Gmpe(str(selectedItemText), res)
                 self.__addGmpeToList(g)
             except Exception as e:
-                self._showMessage('Invalid weight', 'Error')
+                self.showMessage('Invalid weight', 'Error')
 
     def __addGmpeToList(self, g):
         widgetItem = CompositeListWidgetItem()
@@ -222,19 +218,20 @@ class InputFileGeneratorWindow(BaseWindow):
             self.__lastVisited = parts[0]
             parameters = self.__prepareInputs()
             del parameters['gmpes']
-            save(parameters, targetFileName)
-            self._showMessage('Success!')
+
+            self.callFunction(lambda: save(parameters, targetFileName), 'Config file saved')
 
     def __loadConfig(self):
-        sourceFile = gui.QFileDialog.getOpenFileName(self, 'Select File to Load')
+        fileDialog = gui.QFileDialog()
+        sourceFile = fileDialog.getOpenFileName(self, 'Select File to Load')
         if sourceFile is not None and len(str(sourceFile)) != 0:
             sourceFileName = str(sourceFile)
-            parameters = load(sourceFileName)
-            self.__changeParameters(parameters)
+            parameters, status = self.callFunction(lambda: load(sourceFileName))
+            if status:
+                self.__changeParameters(parameters)
 
     def __executeConfig(self):
         targetDir = str(self.__targetDir.getSelectedFile()).strip()
         if len(targetDir) > 0:
             parameters = self.__prepareInputs()
-            execute(parameters, targetDir, self.__separateRuns.checkState() == core.Qt.Checked)
-            self._showMessage('Success!')
+            self.callFunction(lambda: execute(parameters, targetDir), 'Execution successful')
