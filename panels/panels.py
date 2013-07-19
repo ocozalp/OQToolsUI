@@ -7,13 +7,18 @@ class BaseWindow(gui.QWidget):
         self.initGui()
     
     def callFunction(self, lambdaFunc, successMessage=None):
+        success = False
+        result = None
         try:
-            return lambdaFunc()
+            result = lambdaFunc()
+            success = True
         except Exception as exc:
             self.showMessage(exc.message, 'Error')
 
-        if successMessage is not None:
+        if success and successMessage is not None:
             self.showMessage(successMessage, 'Success')
+
+        return result, success
     
     def showMessage(self, text, title='Message'):
         messageBox = gui.QMessageBox()
