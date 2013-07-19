@@ -1,6 +1,3 @@
-__author__ = 'orhan'
-
-
 from PyQt4 import QtGui as gui
 from PyQt4 import QtCore as core
 from os.path import split
