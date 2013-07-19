@@ -1,7 +1,5 @@
-__author__ = 'orhan'
-
-
 from PyQt4 import QtGui as gui
+from PyQt4 import QtCore as core
 from panels import BaseWindow
 from widgets import BrowseFileText, NamedTextArea
 from controllers.convertercontroller import convert
@@ -12,37 +10,47 @@ class ConverterWindow(BaseWindow):
     def __init__(self, parent=None):
         super(BaseWindow, self).__init__(parent=parent)
         self.initGui()
-    
+
     def initGui(self):
         self.sourceFile = BrowseFileText(self, isDir=False)
         self.sourceFile.initGui(self, 'Source File Name', 10, 10)
-        
+
         self.targetFile = BrowseFileText(self, isDir=False)
         self.targetFile.initGui(self, 'Target File Name', 10, 60)
 
-        label = gui.QLabel('Parameters', self)
+        label = gui.QLabel('Source Model Type', self)
         label.setGeometry(10, 110, 150, 30)
 
+        self.modelType = gui.QComboBox(self)
+        self.modelType.addItem(core.QString('Point'))
+        self.modelType.addItem(core.QString('Area'))
+        self.modelType.addItem(core.QString('Simple Fault'))
+        self.modelType.addItem(core.QString('Complex Fault'))
+        self.modelType.setGeometry(160, 110, 100, 30)
+
+        label = gui.QLabel('Parameters', self)
+        label.setGeometry(10, 160, 150, 30)
+
         self.aValPrm = NamedTextArea(self)
-        self.aValPrm.initGui(self, 'A', 10, 160)
+        self.aValPrm.initGui(self, 'A', 10, 210)
         self.aValPrm.setText('aGRval')
 
         self.bValPrm = NamedTextArea(self)
-        self.bValPrm.initGui(self, 'B', 10, 210)
+        self.bValPrm.initGui(self, 'B', 10, 260)
         self.bValPrm.setText('bGRval')
 
         self.idPrm = NamedTextArea(self)
-        self.idPrm.initGui(self, 'ID', 10, 260)
+        self.idPrm.initGui(self, 'ID', 10, 310)
         self.idPrm.setText('EMME_IDAS')
 
         self.namePrm = NamedTextArea(self)
-        self.namePrm.initGui(self, 'Name', 10, 310)
+        self.namePrm.initGui(self, 'Name', 10, 360)
         self.namePrm.setText('CODE')
 
         converter = gui.QPushButton('Convert', self)
-        converter.setGeometry(410, 350, 120, 40)
+        converter.setGeometry(410, 410, 120, 40)
         converter.clicked.connect(self.__convertFiles)
-        
+
     def __convertFiles(self):
         sourceFileName = self.sourceFile.getSelectedFile()
         targetFileName = self.targetFile.getSelectedFile()
@@ -53,7 +61,5 @@ class ConverterWindow(BaseWindow):
         params['ID'] = self.idPrm.getText()
         params['NAME'] = self.namePrm.getText()
 
-        result = self.handleFunction(lambda: convert(sourceFileName, targetFileName, params))
-        
-        if result:
-            self._showMessage('Source model file is generated', 'Success!')
+        result = self.callFunction(lambda: convert(sourceFileName, targetFileName, params),
+                                   'Source model file is generated')
