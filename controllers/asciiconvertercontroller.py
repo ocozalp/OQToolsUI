@@ -1,6 +1,3 @@
-__author__ = 'orhan'
-
-
 from xml.etree import ElementTree
 
 
