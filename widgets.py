@@ -35,6 +35,8 @@ class NamedTextArea(gui.QWidget):
 
 class BrowseFileText(gui.QWidget):
 
+    __lastVisited = '.'
+
     def __init__(self, parent=None, isDir=False):
         super(gui.QWidget, self).__init__(parent=parent)
         self.__selectDirectories = isDir
@@ -56,10 +58,7 @@ class BrowseFileText(gui.QWidget):
         else:
             func = gui.QFileDialog.getOpenFileName
 
-        if hasattr(self, '__lastVisited'):
-            openFileName = func(self, 'Select File', self.__lastVisited)
-        else: 
-            openFileName = func(self, 'Select File')
+        openFileName = func(self, 'Select File', self.__lastVisited)
 
         if openFileName is not None and len(str(openFileName)) > 0:
             self.__namedText.setText(openFileName)
