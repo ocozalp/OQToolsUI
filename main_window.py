@@ -30,7 +30,7 @@ class MainWindow():
         menu.addAction(action)
 
         menu = menuBar.addMenu('Result')
-        action = gui.QAction('&Convert Hazard Maps to ASCII', self.__mainWindow)
+        action = gui.QAction('&Convert Result Files to XLS', self.__mainWindow)
         action.triggered.connect(self.showAsciiConverterWindow)
         menu.addAction(action)
 
