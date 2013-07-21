@@ -2,7 +2,7 @@ __author__ = 'orhan'
 
 
 import shape_parser.shapefile as shp
-from openquake.nrmllib.models import SourceModel, AreaSource, PointGeometry, TGRMFD, NodalPlane, HypocentralDepth
+from openquake.nrmllib.models import *
 
 
 class ShapeFileConverter:
@@ -48,14 +48,14 @@ class ShapeFileConverter:
 
         return result
 
-    def __getSourceModelWithMMax(self, sf, shaperecords, minMag, mMaxPrmName):
+    def __getSourceModelWithMMax(self, sf, shaperecords, minMag, mMaxPrmName, sourceType='P'):
         result = SourceModel()
         result.name = 'Source Model'
         result.sources = []
         for shaperecord in shaperecords:
-            area = AreaSource()
+            area = self.__getAreaSource(sourceType)
+            record = dict()
 
-            record = {}
             for i in xrange(1, len(sf.fields)):
                 record[sf.fields[i][0]] = shaperecord.record[i-1]
 
@@ -119,3 +119,18 @@ class ShapeFileConverter:
             result.sources.append(area)
 
         return result
+
+    def __getAreaSource(self, sourceType):
+        if sourceType == 'Area':
+            return AreaSource()
+
+        if sourceType == 'Point':
+            return PointSource()
+
+        if sourceType == 'Simple Fault':
+            return SimpleFaultSource()
+
+        if sourceType == 'Complex Fault':
+            return ComplexFaultSource()
+
+        raise Exception('Invalid source type')
