@@ -48,5 +48,32 @@ def convertHazardCurveToAscii(sourceFile, targetFile):
 
 
 def convertUhSpectraToAscii(sourceFile, targetFile):
-    #not implemented yet
-    pass
+    tree = ElementTree.parse(sourceFile)
+
+    with open(targetFile, 'w') as f:
+        xmlNamespaces = {'oq': 'http://openquake.org/xmlns/nrml/0.4', 'gml': 'http://www.opengis.net/gml'}
+
+        periodNode = tree.find('./oq:uniformHazardSpectra/oq:periods', xmlNamespaces)
+        periodVals = periodNode.text.split(' ')
+
+        nodes = tree.findall('./oq:uniformHazardSpectra/oq:uhs', xmlNamespaces)
+
+        header = 'Lon\tLat'
+        for periodVal in periodVals:
+            header += '\t'
+            header += periodVal
+        header += '\n'
+
+        f.write(header)
+
+        for node in nodes:
+            coordinates = node.find('gml:Point/gml:pos', xmlNamespaces).text.split(' ')
+            row = coordinates[0] + '\t' + coordinates[1]
+
+            imls = node.find('oq:IMLs', xmlNamespaces).text.split(' ')
+            for iml in imls:
+                row += '\t' + iml
+
+            f.write(row + '\n')
+
+        f.flush()
