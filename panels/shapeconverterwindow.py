@@ -5,7 +5,7 @@ from widgets import BrowseFileText, NamedTextArea
 from controllers.convertercontroller import convert
 
 
-class ConverterWindow(BaseWindow):
+class ShapeConverterWindow(BaseWindow):
 
     def __init__(self, parent=None):
         super(BaseWindow, self).__init__(parent=parent)

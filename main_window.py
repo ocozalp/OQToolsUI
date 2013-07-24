@@ -1,6 +1,6 @@
 from panels.asciiconverterwindow import AsciiConverterWindow
 from PyQt4 import QtGui as gui
-from panels.converterwindow import ConverterWindow
+from panels.shapeconverterwindow import ShapeConverterWindow
 from panels.inputfilegenwindow import InputFileGeneratorWindow
 
 
@@ -21,7 +21,7 @@ class MainWindow():
         menuBar = self.__mainWindow.menuBar()
         menu = menuBar.addMenu('Input')
 
-        action = gui.QAction('&Convert Source Models', self.__mainWindow)
+        action = gui.QAction('&Convert Shape Files', self.__mainWindow)
         action.triggered.connect(self.showConverterWindow)
         menu.addAction(action)
         
@@ -35,7 +35,7 @@ class MainWindow():
         menu.addAction(action)
 
     def showConverterWindow(self):
-        self.__mainWindow.setCentralWidget(ConverterWindow(parent=self.__mainWindow))
+        self.__mainWindow.setCentralWidget(ShapeConverterWindow(parent=self.__mainWindow))
 
     def showInputFileGeneratorWindow(self):
         self.__mainWindow.setCentralWidget(InputFileGeneratorWindow(parent=self.__mainWindow))
