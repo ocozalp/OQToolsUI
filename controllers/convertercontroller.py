@@ -21,8 +21,6 @@ def convert(sourceFileName, targetFileName,
 
     writeSourceModelTree(os.path.join(os.path.dirname(targetFileName), 'source_model_logic_tree.xml'), sourceModels)
 
-    return True
-
 
 def convertShapeFileToNrml(sourceFileName, targetFileName, nameMappings):
     ind = sourceFileName.rindex('.')
