@@ -75,7 +75,7 @@ class InputFileGeneratorWindow(BaseWindow):
                 res = float(str(inputDialog.getText(self.__sourceGmpeList, 'Weight', 'Weight of GMPE?')[0]))
                 g = Gmpe(str(selectedItemText), res)
                 self.__addGmpeToList(g)
-            except Exception as e:
+            except:
                 self.showMessage('Invalid weight', 'Error')
 
     def __addGmpeToList(self, g):

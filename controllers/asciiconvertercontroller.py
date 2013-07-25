@@ -1,5 +1,6 @@
 from xml.etree import ElementTree
 
+
 def convertHazardMapToAscii(sourceFile, targetFile):
     tree = ElementTree.parse(sourceFile)
 
@@ -40,7 +41,6 @@ def convertHazardCurveToAscii(sourceFile, targetFile):
             poes = node.find('oq:poEs', xmlNamespaces).text.split(' ')
             for poe in poes:
                 row += '\t' + poe
-
 
             f.write(row + '\n')
 

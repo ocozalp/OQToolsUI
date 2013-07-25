@@ -30,14 +30,14 @@ class AsciiConverterWindow(BaseWindow):
     def __convertFile(self):
         s = self.sourceFile.getSelectedFile()
         t = self.targetFile.getSelectedFile()
-        type = self.outputFileType.currentIndex()
+        outputFileType = self.outputFileType.currentIndex()
         func = None
 
-        if type == 0:
+        if outputFileType == 0:
             func = convertHazardMapToAscii
-        elif type == 1:
+        elif outputFileType == 1:
             func = convertHazardCurveToAscii
-        elif type == 2:
+        elif outputFileType == 2:
             func = convertUhSpectraToAscii
 
         self.callFunction(lambda: func(s, t), 'Conversion is successful')

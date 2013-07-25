@@ -61,5 +61,5 @@ class ShapeConverterWindow(BaseWindow):
         params['ID'] = self.idPrm.getText()
         params['NAME'] = self.namePrm.getText()
 
-        result = self.callFunction(lambda: convert(sourceFileName, targetFileName, params),
+        self.callFunction(lambda: convert(sourceFileName, targetFileName, params),
                                    'Source model file is generated')
