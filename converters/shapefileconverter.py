@@ -1,6 +1,3 @@
-__author__ = 'orhan'
-
-
 import shape_parser.shapefile as shp
 from openquake.nrmllib.models import *
 

@@ -1,6 +1,3 @@
-__author__ = 'orhan'
-
-
 from openquake.nrmllib.hazard.writers import SourceModelXMLWriter
 from converters.shapefileconverter import ShapeFileConverter
 import os
