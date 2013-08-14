@@ -45,7 +45,7 @@ class ShapeFileConverter:
 
         return result
 
-    def __getSourceModelWithMMax(self, sf, shaperecords, minMag, mMaxPrmName, sourceType='P'):
+    def __getSourceModelWithMMax(self, sf, shaperecords, minMag, mMaxPrmName, sourceType='Point'):
         result = SourceModel()
         result.name = 'Source Model'
         result.sources = []
@@ -91,7 +91,7 @@ class ShapeFileConverter:
                     if nodal_plane_val > 0.0:
                         nodal_plane = NodalPlane()
                         nodal_plane.probability = nodal_plane_val
-                        nodal_plane.strike = record['AZIMUTH']
+                        nodal_plane.strike = record['AZIMUTH'] % 360
                         nodal_plane.dip = record['PREF_DIP']
                         nodal_plane.rake = nodal_plane_property[1]
 
