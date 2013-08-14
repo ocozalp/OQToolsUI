@@ -1,6 +1,3 @@
-__author__ = 'orhan'
-
-
 gmpes = ['AbrahamsonSilva2008', 'AkkarEtAl2013', 'AkkarBommer2010', 'AkkarCagnan2010', 'AtkinsonBoore2003SInter',
          'AtkinsonBoore2003SSlab', 'AtkinsonBoore2006', 'BooreAtkinson2008', 'Campbell2003', 'Campbell2003SHARE',
          'CauzziFaccioli2008', 'ChiouYoungs2008', 'FaccioliEtAl2010', 'LinLee2008SInter', 'LinLee2008SSlab',

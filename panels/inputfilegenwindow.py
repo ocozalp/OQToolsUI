@@ -1,6 +1,3 @@
-__author__ = 'orhan'
-
-
 from PyQt4 import QtGui as gui
 from controllers.inputfilegencontroller import save, load, execute
 from os.path import split
