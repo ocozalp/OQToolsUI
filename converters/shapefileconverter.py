@@ -5,7 +5,7 @@ from openquake.nrmllib.models import *
 class ShapeFileConverter:
 
     __nodal_plane_properties = (('SS', 0.0), ('TF', 90.0), ('NF', -90.0))
-    __tecRegionProperties = {'Active': 'Active Shallow Crust'}
+    __tecRegionProperties = {'Active': 'Active Shallow Crust', 'Interface': 'Subduction Interface', 'Inslab': 'Subduction IntraSlab'}
 
     def __init__(self, sourceFileName, targetFileName, nameMappings):
         self.__sourceFileName = sourceFileName
@@ -18,7 +18,7 @@ class ShapeFileConverter:
 
         return name
 
-    def parse(self, minMag=5.0):
+    def parse(self, sourceType, minMag=5.0):
         sf = shp.Reader(self.__sourceFileName)
         shaperecords = sf.shapeRecords()
         result = list()
@@ -40,7 +40,7 @@ class ShapeFileConverter:
             if not found or float(shaperecords[0].record[ind-1]) == 0.0:
                 break
 
-            result.append((self.__getSourceModelWithMMax(sf, shaperecords, minMag, mMaxName),
+            result.append((self.__getSourceModelWithMMax(sf, shaperecords, minMag, mMaxName, sourceType),
                            float(shaperecords[0].record[ind2-1])))
 
         return result

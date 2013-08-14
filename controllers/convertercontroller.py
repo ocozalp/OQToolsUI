@@ -3,9 +3,9 @@ from converters.shapefileconverter import ShapeFileConverter
 import os
 
 
-def convert(sourceFileName, targetFileName,
+def convert(sourceFileName, targetFileName, sourceType,
             nameMappings={'A': 'aGRval', 'B': 'bGRval', 'ID': 'EMME_IDAS', 'NAME': 'CODE'}):
-    deserializedShps = convertShapeFileToNrml(sourceFileName, targetFileName, nameMappings)
+    deserializedShps = convertShapeFileToNrml(sourceFileName, targetFileName, nameMappings, sourceType)
 
     fileName, ext = os.path.splitext(targetFileName)
     sourceModels = list()
@@ -19,12 +19,12 @@ def convert(sourceFileName, targetFileName,
     writeSourceModelTree(os.path.join(os.path.dirname(targetFileName), 'source_model_logic_tree.xml'), sourceModels)
 
 
-def convertShapeFileToNrml(sourceFileName, targetFileName, nameMappings):
+def convertShapeFileToNrml(sourceFileName, targetFileName, nameMappings, sourceType):
     ind = sourceFileName.rindex('.')
     sourceFileName = sourceFileName[:ind]
 
     s = ShapeFileConverter(sourceFileName, targetFileName, nameMappings)
-    return s.parse()
+    return s.parse(sourceType)
 
 
 def writeSourceModelTree(targetFilePath, sourceModels):
