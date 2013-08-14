@@ -48,7 +48,7 @@ class ShapeFileConverter:
 
         return result
 
-    def __getSourceModelWithMMax(self, sf, shaperecords, minMag, mMaxPrmName, sourceType='P'):
+    def __getSourceModelWithMMax(self, sf, shaperecords, minMag, mMaxPrmName, sourceType='Point'):
         result = SourceModel()
         result.name = 'Source Model'
         result.sources = []
@@ -116,7 +116,8 @@ class ShapeFileConverter:
                 else:
                     break
 
-            result.sources.append(area)
+            if ind > 1:
+                result.sources.append(area)
 
         return result
 
