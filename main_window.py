@@ -2,7 +2,7 @@ from panels.asciiconverterwindow import AsciiConverterWindow
 from PyQt4 import QtGui as gui
 from panels.shapeconverterwindow import ShapeConverterWindow
 from panels.inputfilegenwindow import InputFileGeneratorWindow
-
+from panels.nrmlconverterwindow import NrmlConverterWindow
 
 class MainWindow():
     def __init__(self):
@@ -24,7 +24,11 @@ class MainWindow():
         action = gui.QAction('&Convert Shape Files', self.__mainWindow)
         action.triggered.connect(self.showConverterWindow)
         menu.addAction(action)
-        
+
+        action = gui.QAction('&NRML v0.3 -> NRML v0.4', self.__mainWindow)
+        action.triggered.connect(self.showNrmlConverterWindow)
+        menu.addAction(action)
+
         action = gui.QAction('&Generate Input Files', self.__mainWindow)
         action.triggered.connect(self.showInputFileGeneratorWindow)
         menu.addAction(action)
@@ -42,6 +46,9 @@ class MainWindow():
 
     def showAsciiConverterWindow(self):
         self.__mainWindow.setCentralWidget(AsciiConverterWindow(parent=self.__mainWindow))
+
+    def showNrmlConverterWindow(self):
+        self.__mainWindow.setCentralWidget(NrmlConverterWindow(parent=self.__mainWindow))
 
     def show(self):
         self.__mainWindow.show()
