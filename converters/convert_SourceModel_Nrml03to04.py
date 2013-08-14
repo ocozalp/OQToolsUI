@@ -185,10 +185,11 @@ def _append_simple_fault_source(source_model, src, src_idx):
         nrml04._append_truncated_gr_mfd(simple_source, src.mfd)
 
     nrml04._append_rake(simple_source, src.rake)
-    
-if __name__=='__main__':
 
+def convertv3Tov4(source, target):
     strikes_dips = _read_faulting_style_file()
-    srcs =  nrml03._parse_source_model_file('/home/orhan/Desktop/EMME_ASMODEL_BRANCH01.xml')
-    _write_source_model_file_nrml04('/home/orhan/Desktop/EMME_ASMODEL_BRANCH01_4.xml', srcs, strikes_dips)
-    
+    srcs =  nrml03._parse_source_model_file(source)
+    _write_source_model_file_nrml04(target, srcs, strikes_dips)
+
+if __name__=='__main__':
+    convertv3Tov4('/home/orhan/Desktop/EMME_ASMODEL_BRANCH01.xml', '/home/orhan/Desktop/EMME_ASMODEL_BRANCH01_4.xml')
