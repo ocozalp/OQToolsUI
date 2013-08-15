@@ -1,6 +1,6 @@
 from setuptools import setup
 
-PY_MODULES = ['__main__.main']
+PY_MODULES = ['oqtools.main']
 
 setup(
     entry_points={
