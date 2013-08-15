@@ -7,6 +7,7 @@ sudo apt-get libgeos-c1
 
 sudo pip install numpy
 sudo pip install scipy
+sudo pip install pyshp
 
 git clone https://github.com/gem/oq-nrmllib.git
 git clone https://github.com/gem/oq-hazardlib.git
