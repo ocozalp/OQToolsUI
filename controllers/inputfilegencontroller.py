@@ -40,8 +40,8 @@ def execute(parameters, targetDir):
 
 def getJobIniContent(parameters, outDir):
     parentDir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    jobIniFile = os.path.join(parentDir, 'job.ini.template')
-    intensityLevelsFile = os.path.join(parentDir, 'intensityLevels.txt')
+    jobIniFile = os.path.join(parentDir, '../oqtools/job.ini.template')
+    intensityLevelsFile = os.path.join(parentDir, '../oqtools/intensityLevels.txt')
 
     with open(jobIniFile, 'r') as f:
         jobIniTemplate = f.read()
