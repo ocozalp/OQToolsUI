@@ -10,7 +10,7 @@ setup(
         },
     name='OQToolsUI',
     version='1.0.0',
-    packages=['common', 'ui', 'converters', 'controllers', 'shape_parser', 'oqtools'],
+    packages=['common', 'ui', 'converters', 'controllers', 'oqtools'],
     url='http://github.com/ocozalp/OQToolsUI',
     license='Apache License Version 2.0',
     author='ocozalp',
