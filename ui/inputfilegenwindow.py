@@ -1,11 +1,13 @@
 from PyQt4 import QtGui as gui
-from controllers.inputfilegencontroller import save, load, execute
 from os.path import split
-from panels import BaseWindow
 from string import join
+
+from controllers.inputfilegencontroller import save, load, execute
+from ui.panels import BaseWindow
+from ui.widgets import BrowseFileText, NamedTextArea, CompositeListWidgetItem
 from common.values import gmpes
-from widgets import BrowseFileText, NamedTextArea, CompositeListWidgetItem
 from common.entities import Gmpe
+
 
 class InputFileGeneratorWindow(BaseWindow):
     

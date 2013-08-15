@@ -1,6 +1,7 @@
 import sys
-from main_window import MainWindow
 from PyQt4 import QtGui as gui
+
+from oqtools.main_window import MainWindow
 
 
 def main():

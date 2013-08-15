@@ -1,6 +1,6 @@
 import PyQt4.QtGui as gui
-from panels import *
-from widgets import *
+from ui.panels import *
+from ui.widgets import *
 from controllers.nrmlconvertercontroller import convert
 
 

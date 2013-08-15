@@ -1,8 +1,8 @@
-from panels.asciiconverterwindow import AsciiConverterWindow
+from ui.asciiconverterwindow import AsciiConverterWindow
 from PyQt4 import QtGui as gui
-from panels.shapeconverterwindow import ShapeConverterWindow
-from panels.inputfilegenwindow import InputFileGeneratorWindow
-from panels.nrmlconverterwindow import NrmlConverterWindow
+from ui.shapeconverterwindow import ShapeConverterWindow
+from ui.inputfilegenwindow import InputFileGeneratorWindow
+from ui.nrmlconverterwindow import NrmlConverterWindow
 
 class MainWindow():
     def __init__(self):

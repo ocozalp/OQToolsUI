@@ -1,7 +1,7 @@
 from PyQt4 import QtGui as gui
 from PyQt4 import QtCore as core
-from panels import BaseWindow
-from widgets import BrowseFileText, NamedTextArea
+from ui.panels import BaseWindow
+from ui.widgets import BrowseFileText, NamedTextArea
 from controllers.convertercontroller import convert
 
 

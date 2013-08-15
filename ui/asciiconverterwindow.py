@@ -1,6 +1,7 @@
-from widgets import BrowseFileText
-from panels import BaseWindow
 from PyQt4 import QtGui as gui, QtCore as core
+
+from ui.widgets import BrowseFileText
+from ui.panels import BaseWindow
 from controllers.asciiconvertercontroller import *
 
 
