@@ -1,5 +1,5 @@
 from PyQt4 import QtGui as gui
-
+import traceback
 
 class BaseWindow(gui.QWidget):
     def __init__(self, parent=None):
@@ -13,6 +13,7 @@ class BaseWindow(gui.QWidget):
             result = lambdaFunc()
             success = True
         except Exception as exc:
+            traceback.print_exc()
             self.showMessage(exc.message, 'Error')
 
         if success and successMessage is not None:
