@@ -1,5 +1,7 @@
 from xml.etree import ElementTree
 from math import log, exp
+from common.math_utils import find_interpolated_val
+
 
 def convertHazardMapToAscii(sourceFile, targetFile):
     tree = ElementTree.parse(sourceFile)
@@ -15,7 +17,7 @@ def convertHazardMapToAscii(sourceFile, targetFile):
         f.flush()
 
 
-def convertHazardCurveToAscii(sourceFile, targetFile, returnPeriods=[72, 101, 475, 975, 2475, 4975, 10000]):
+def convertHazardCurveToAscii(sourceFile, targetFile, poes=[0.39, 0.1, 0.049, 0.02, 0.005]):
     tree = ElementTree.parse(sourceFile)
 
     with open(targetFile, 'w') as f:
@@ -25,6 +27,9 @@ def convertHazardCurveToAscii(sourceFile, targetFile, returnPeriods=[72, 101, 47
         imlVals = [float(iml) for iml in imlNode.text.split(' ')]
 
         nodes = tree.findall('./oq:hazardCurves/oq:hazardCurve', xmlNamespaces)
+
+        #TODO: must remove calculation from here!
+        returnPeriods = [round((-50.0/log(1-poe))) for poe in poes]
 
         header = 'Lon\tLat'
         for returnPeriod in returnPeriods:
@@ -39,41 +44,16 @@ def convertHazardCurveToAscii(sourceFile, targetFile, returnPeriods=[72, 101, 47
             coordinates = node.find('gml:Point/gml:pos', xmlNamespaces).text.split(' ')
             row = coordinates[0] + '\t' + coordinates[1]
 
-            poes = [float(poe) for poe in node.find('oq:poEs', xmlNamespaces).text.split(' ')]
+            node_poes = [float(poe) for poe in node.find('oq:poEs', xmlNamespaces).text.split(' ')]
 
-            for returnPeriod in returnPeriods:
-                rrp = 1.0 / returnPeriod
-                res = 0
-
-                if imlVals[0] >= rrp:
-                    res = imlVals[0]
-                elif imlVals[len(imlVals)-1] <= rrp:
-                    res = imlVals[len(imlVals)-1]
-                else:
-                    imlInd = 0
-                    for i in xrange(1, len(poes)):
-                        if poes[i] > rrp > poes[i-1] or poes[i-1] > rrp > poes[i]:
-                            imlInd = i
-                            break
-                    x1 = c_log(imlVals[imlInd-1])
-                    x2 = c_log(imlVals[imlInd])
-                    y1 = c_log(poes[imlInd-1])
-                    y2 = c_log(poes[imlInd])
-                    y = log(rrp)
-
-                    res = exp(((y - y1) * (x2 - x1)) / (y2 - y1) + x1)
-
+            for poe in poes:
+                res = find_interpolated_val(imlVals, node_poes, poe)
                 row += '\t' + str(res)
 
             f.write(row + '\n')
 
         f.flush()
 
-def c_log(val):
-    if val == 0:
-        return 0.0
-
-    return log(val)
 
 def convertUhSpectraToAscii(sourceFile, targetFile):
     tree = ElementTree.parse(sourceFile)
