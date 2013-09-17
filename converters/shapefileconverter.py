@@ -1,5 +1,8 @@
-import shape_parser.shapefile as shp
+__author__ = 'orhan'
+
+
 from openquake.nrmllib.models import *
+import shapefile as shp
 
 
 class ShapeFileConverter:
@@ -113,7 +116,8 @@ class ShapeFileConverter:
                 else:
                     break
 
-            result.sources.append(area)
+            if ind > 1:
+                result.sources.append(area)
 
         return result
 
