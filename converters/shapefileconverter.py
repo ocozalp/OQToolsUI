@@ -23,7 +23,7 @@ class ShapeFileConverter:
 
     def parse(self, sourceType, minMag=5.0):
         sf = shp.Reader(self.__sourceFileName)
-        shaperecords = sf.shapeRecords()
+        shape_records = sf.shapeRecords()
         result = list()
 
         for maxMagInd in xrange(1, 6):
@@ -40,11 +40,9 @@ class ShapeFileConverter:
                 elif sf.fields[i][0] == wMaxName:
                     ind2 = i
 
-            if not found or float(shaperecords[0].record[ind-1]) == 0.0:
-                break
-
-            result.append((self.__getSourceModelWithMMax(sf, shaperecords, minMag, mMaxName, sourceType),
-                           float(shaperecords[0].record[ind2-1])))
+            if found and float(shape_records[0].record[ind-1]) != 0.0:
+                result.append((self.__getSourceModelWithMMax(sf, shape_records, minMag, mMaxName, sourceType),
+                               float(shape_records[0].record[ind2-1])))
 
         return result
 
