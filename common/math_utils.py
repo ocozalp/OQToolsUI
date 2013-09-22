@@ -37,3 +37,7 @@ def c_log(val):
         return 0.0
 
     return log(val)
+
+
+def poe_to_return_period(poe):
+    return round((-50.0/log(1-poe)))

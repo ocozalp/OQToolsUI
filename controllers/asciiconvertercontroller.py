@@ -1,6 +1,6 @@
 from xml.etree import ElementTree
 from math import log, exp
-from common.math_utils import find_interpolated_val
+from common.math_utils import find_interpolated_val, poe_to_return_period
 
 
 def convertHazardMapToAscii(sourceFile, targetFile):
@@ -28,8 +28,7 @@ def convertHazardCurveToAscii(sourceFile, targetFile, poes=[0.39, 0.1, 0.049, 0.
 
         nodes = tree.findall('./oq:hazardCurves/oq:hazardCurve', xmlNamespaces)
 
-        #TODO: must remove calculation from here!
-        returnPeriods = [round((-50.0/log(1-poe))) for poe in poes]
+        returnPeriods = [poe_to_return_period(poe) for poe in poes]
 
         header = 'Lon\tLat'
         for returnPeriod in returnPeriods:
