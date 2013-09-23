@@ -31,23 +31,29 @@ def convertShapeFileToNrml(sourceFileName, targetFileName, nameMappings, sourceT
 
 
 def writeSourceModelTree(targetFilePath, sourceModels):
-    nrml_node = ElementTree.Element('nrml', {'xmlns': 'http://openquake.org/xmlns/nrml/0.4'})
-    logic_tree_node = ElementTree.SubElement(nrml_node, 'logicTree', {'logicTreeID': 'lt1'})
+    nrml_node = ElementTree.Element('nrml')
+    nrml_node.set('xmlns', 'http://openquake.org/xmlns/nrml/0.4')
 
-    logic_tree_branching_level_node = ElementTree.SubElement(logic_tree_node, 'logicTreeBranchingLevel',
-                                                    {'branchingLevelID': 'bl1'})
-    logic_tree_branch_set_node = ElementTree.SubElement(logic_tree_branching_level_node, 'logicTreeBranchSet',
-                                               {'uncertaintyType': 'sourceModel', 'branchSetID': 'bs1'})
+    logic_tree_node = ElementTree.SubElement(nrml_node, 'logicTree')
+    logic_tree_node.set('logicTreeID', 'lt1')
+
+    logic_tree_branching_level_node = ElementTree.SubElement(logic_tree_node, 'logicTreeBranchingLevel')
+    logic_tree_branching_level_node.set('branchingLevelID', 'bl1')
+
+    logic_tree_branch_set_node = ElementTree.SubElement(logic_tree_branching_level_node, 'logicTreeBranchSet')
+    logic_tree_branch_set_node.set('uncertaintyType', 'sourceModel')
+    logic_tree_branch_set_node.set('branchSetID', 'bs1')
 
     for i in xrange(len(sourceModels)):
-        logic_tree_branch_node = ElementTree.SubElement(logic_tree_branch_set_node, 'logicTreeBranch',
-                                                        {'branchID': 'b'+str(i+1)})
+        logic_tree_branch_node = ElementTree.SubElement(logic_tree_branch_set_node, 'logicTreeBranch')
+        logic_tree_branch_node.set('branchID', 'b'+str(i+1))
 
         uncertainty_mode_node = ElementTree.SubElement(logic_tree_branch_node, 'uncertaintyModel')
         uncertainty_mode_node.text = '../../SourceModels/' + sourceModels[i][0]
+
         uncertainty_weight_node = ElementTree.SubElement(logic_tree_branch_node, 'uncertaintyWeight')
         uncertainty_weight_node.text = str(sourceModels[i][1])
 
-    tree = ElementTree.ElementTree(element=nrml_node)
+    tree = ElementTree.ElementTree(nrml_node)
 
     write_xml(tree, targetFilePath)
