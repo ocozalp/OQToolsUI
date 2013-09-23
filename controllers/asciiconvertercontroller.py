@@ -1,5 +1,5 @@
 from xml.etree import ElementTree
-from math import log, exp
+
 from common.math_utils import find_interpolated_val, poe_to_return_period
 
 
