@@ -64,9 +64,9 @@ def getJobIniContent(parameters, outDir):
         for period in parameters['periods'].split(' '):
             period = float(period.strip())
             if period == 0.0:
-                periodStr = '"PGA"'
+                periodStr += '"PGA"'
             else:
-                periodStr = '"SA(' + str(period) + ')"'
+                periodStr += '"SA(' + str(period) + ')"'
 
             periodStr += ': ' + intensityLevels
             periodList.append(periodStr)
