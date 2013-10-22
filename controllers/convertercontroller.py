@@ -1,5 +1,8 @@
 from openquake.nrmllib.hazard.writers import SourceModelXMLWriter
 from converters.shapefileconverter import ShapeFileConverter
+from xml.etree import ElementTree
+from common.xml_utils import write_xml
+
 import os
 
 
@@ -28,37 +31,29 @@ def convertShapeFileToNrml(sourceFileName, targetFileName, nameMappings, sourceT
 
 
 def writeSourceModelTree(targetFilePath, sourceModels):
-    template = '''<?xml version="1.0" encoding="UTF-8"?>
-<nrml xmlns:gml="http://www.opengis.net/gml"
-      xmlns="http://openquake.org/xmlns/nrml/0.4">
-    <logicTree logicTreeID="lt1">
-        <logicTreeBranchingLevel branchingLevelID="bl1">
-            <logicTreeBranchSet uncertaintyType="sourceModel" branchSetID="bs1">
-                [[branches]]
-            </logicTreeBranchSet>
-        </logicTreeBranchingLevel>
-    </logicTree>
-</nrml>
-        '''
+    nrml_node = ElementTree.Element('nrml')
+    nrml_node.set('xmlns', 'http://openquake.org/xmlns/nrml/0.4')
 
-    branches = ''
-    branchTemplate = '''
-                <logicTreeBranch branchID="b[[index]]">
-                    <uncertaintyModel>../../SourceModels/[[sourceModelName]]</uncertaintyModel>
-                    <uncertaintyWeight>[[weight]]</uncertaintyWeight>
-                </logicTreeBranch>
-        '''
+    logic_tree_node = ElementTree.SubElement(nrml_node, 'logicTree')
+    logic_tree_node.set('logicTreeID', 'lt1')
+
+    logic_tree_branching_level_node = ElementTree.SubElement(logic_tree_node, 'logicTreeBranchingLevel')
+    logic_tree_branching_level_node.set('branchingLevelID', 'bl1')
+
+    logic_tree_branch_set_node = ElementTree.SubElement(logic_tree_branching_level_node, 'logicTreeBranchSet')
+    logic_tree_branch_set_node.set('uncertaintyType', 'sourceModel')
+    logic_tree_branch_set_node.set('branchSetID', 'bs1')
 
     for i in xrange(len(sourceModels)):
-        branchTemplateStr = branchTemplate.replace('[[index]]', str(i+1))
-        branchTemplateStr = branchTemplateStr.replace('[[sourceModelName]]', sourceModels[i][0])
-        branchTemplateStr = branchTemplateStr.replace('[[weight]]', str(sourceModels[i][1]))
-        branches = "\n".join([branches, branchTemplateStr])
+        logic_tree_branch_node = ElementTree.SubElement(logic_tree_branch_set_node, 'logicTreeBranch')
+        logic_tree_branch_node.set('branchID', 'b'+str(i+1))
 
-    template = template.replace('[[branches]]', branches)
-    f = open(targetFilePath, 'w')
-    f.write(template)
-    f.write('\n')
+        uncertainty_mode_node = ElementTree.SubElement(logic_tree_branch_node, 'uncertaintyModel')
+        uncertainty_mode_node.text = '../../SourceModels/' + sourceModels[i][0]
 
-    f.flush()
-    f.close()
+        uncertainty_weight_node = ElementTree.SubElement(logic_tree_branch_node, 'uncertaintyWeight')
+        uncertainty_weight_node.text = str(sourceModels[i][1])
+
+    tree = ElementTree.ElementTree(nrml_node)
+
+    write_xml(tree, targetFilePath)

@@ -1,4 +1,6 @@
 import os
+import xml.etree.ElementTree as ET
+from common.xml_utils import write_xml
 
 
 def save(parameters, targetFile):
@@ -86,40 +88,29 @@ def writeJobIni(filePath, jobIniContent):
 
 
 def writeGmpeLogicTree(targetFilePath, gmpes):
-    template = '''
-        <?xml version="1.0" encoding="UTF-8"?>
-        <nrml xmlns:gml="http://www.opengis.net/gml"
-              xmlns="http://openquake.org/xmlns/nrml/0.4">
-            <logicTree logicTreeID='lt1'>
-                <logicTreeBranchingLevel branchingLevelID="bl1">
-                    <logicTreeBranchSet uncertaintyType="gmpeModel" branchSetID="bs1"
-                            applyToTectonicRegionType="Active Shallow Crust">
-                        [[branches]]
-                    </logicTreeBranchSet>
-                </logicTreeBranchingLevel>
-            </logicTree>
-        </nrml>
-    '''
+    nrml_node = ET.Element('nrml')
+    nrml_node.set('nrml', 'http://openquake.org/xmlns/nrml/0.4')
 
-    branches = ''
+    logic_tree_node = ET.SubElement(nrml_node, 'logicTree')
+    logic_tree_node.set('logicTreeID', 'lt1')
+
+    logic_tree_branching_level_node = ET.SubElement(logic_tree_node, 'logicTreeBranchingLevel')
+    logic_tree_branching_level_node.set('branchingLevelID', 'bl1')
+
+    logic_tree_branch_set_node = ET.SubElement(logic_tree_branching_level_node, 'logicTreeBranchSet')
+    logic_tree_branch_set_node.set('uncertaintyType', 'gmpeModel')
+    logic_tree_branch_set_node.set('branchSetID', 'bs1')
+    logic_tree_branch_set_node.set('applyToTectonicRegionType', 'Active Shallow Crust')
+
     for i in range(len(gmpes)):
-        branch = '''
-                <logicTreeBranch branchID="b[[i]]">
-                            <uncertaintyModel>[[gmpeName]]</uncertaintyModel>
-                            <uncertaintyWeight>[[weight]]</uncertaintyWeight>
-                </logicTreeBranch>
-        '''
+        logic_tree_branch_node = ET.SubElement(logic_tree_branch_set_node, 'logicTreeBranch')
+        logic_tree_branch_node.set('branchID', 'b' + str(i+1))
 
-        branch = branch.replace('[[i]]', str(i+1))
-        branch = branch.replace('[[gmpeName]]', gmpes[i].name)
-        branch = branch.replace('[[weight]]', str(gmpes[i].weight))
+        uncertainty_model_node = ET.SubElement(logic_tree_branch_node, 'uncertaintyModel')
+        uncertainty_model_node.text = gmpes[i].name
 
-        branches += branch
+        uncertainty_weight_node = ET.SubElement(logic_tree_branch_node, 'uncertaintyWeight')
+        uncertainty_weight_node.text = str(gmpes[i].weight)
 
-    template = template.replace('[[branches]]', branches)
-    f = open(targetFilePath, 'w')
-    f.write(template)
-    f.write('\n')
-
-    f.flush()
-    f.close()
+    tree = ET.ElementTree(nrml_node)
+    write_xml(tree, targetFilePath)

@@ -19,7 +19,7 @@ def find_interpolated_val(x_vals, y_vals, y):
                 found = True
                 break
         if not found:
-            raise Exception('y value (%(y)) is invalid (y1: %(y1) - y2: %(y2))' % {'y': y, 'y1': y1, 'y2': y2})
+            raise Exception('y value (%(y)d) is invalid (y1: %(y1)d - y2: %(y2)d)' % {'y': y, 'y1': y1, 'y2': y2})
 
         x1 = c_log(x_vals[imlInd])
         x2 = c_log(x_vals[imlInd+1])
