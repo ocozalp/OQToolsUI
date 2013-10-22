@@ -103,12 +103,19 @@ class ShapeFileConverter:
 
             area.hypo_depth_dist = []
             ind = 1
+
+            total_weight = 0.0
             while True:
                 key = 'HYPODEPTH' + str(ind)
                 if record.has_key(key) and float(record[key]) > 0.0:
                     hypo_depth = HypocentralDepth()
                     hypo_depth.probability = float(record['WHDEPTH' + str(ind)])
                     hypo_depth.depth = float(record['HYPODEPTH' + str(ind)])
+                    total_weight += hypo_depth.depth
+
+                    if total_weight > 1.0:
+                        raise Exception('Invalid hypo depth weights in area: %(id)' % {'id': area.id})
+
                     area.hypo_depth_dist.append(hypo_depth)
                     ind += 1
                 else:
