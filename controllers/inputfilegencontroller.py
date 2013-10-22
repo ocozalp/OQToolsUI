@@ -89,7 +89,7 @@ def writeJobIni(filePath, jobIniContent):
 
 def writeGmpeLogicTree(targetFilePath, gmpes):
     nrml_node = ET.Element('nrml')
-    nrml_node.set('nrml', 'http://openquake.org/xmlns/nrml/0.4')
+    nrml_node.set('xmlns', 'http://openquake.org/xmlns/nrml/0.4')
 
     logic_tree_node = ET.SubElement(nrml_node, 'logicTree')
     logic_tree_node.set('logicTreeID', 'lt1')
