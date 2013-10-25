@@ -8,7 +8,8 @@ import shapefile as shp
 class ShapeFileConverter:
 
     __nodal_plane_properties = (('SS', 0.0), ('TF', 90.0), ('NF', -90.0))
-    __tecRegionProperties = {'Active': 'Active Shallow Crust', 'Interface': 'Subduction Interface', 'Inslab': 'Subduction IntraSlab'}
+    __tecRegionProperties = {'Active': 'Active Shallow Crust', 'Interface': 'Subduction Interface',
+                             'Inslab': 'Subduction IntraSlab'}
 
     def __init__(self, sourceFileName, targetFileName, nameMappings):
         self.__sourceFileName = sourceFileName
@@ -24,7 +25,10 @@ class ShapeFileConverter:
     def parse(self, sourceType, minMag=5.0):
         sf = shp.Reader(self.__sourceFileName)
         shape_records = sf.shapeRecords()
-        result = list()
+
+        source_model = SourceModel()
+        source_model.name = 'Source Model'
+        source_model.sources = []
 
         for maxMagInd in xrange(1, 6):
             mMaxName = 'MMAXMAG0' + str(maxMagInd)
@@ -41,15 +45,12 @@ class ShapeFileConverter:
                     ind2 = i
 
             if found and float(shape_records[0].record[ind-1]) != 0.0:
-                result.append((self.__getSourceModelWithMMax(sf, shape_records, minMag, mMaxName, sourceType),
-                               float(shape_records[0].record[ind2-1])))
+                self.__getSourceModelWithMMax(source_model, sf, shape_records, minMag, mMaxName, maxMagInd, sourceType)
 
-        return result
+        return source_model
 
-    def __getSourceModelWithMMax(self, sf, shaperecords, minMag, mMaxPrmName, sourceType='Point'):
-        result = SourceModel()
-        result.name = 'Source Model'
-        result.sources = []
+    def __getSourceModelWithMMax(self, sourceModel, sf, shaperecords, minMag, mMaxPrmName, maxMagInd, sourceType):
+
         for shaperecord in shaperecords:
             area = self.__getAreaSource(sourceType)
             record = dict()
@@ -58,7 +59,7 @@ class ShapeFileConverter:
                 record[sf.fields[i][0]] = shaperecord.record[i-1]
 
             area.trt = self.__tecRegionProperties[record['TECREG']]
-            area.id = record[self.getPrmName('ID')]
+            area.id = record[self.getPrmName('ID')] + "_" + str(maxMagInd)
             area.name = record[self.getPrmName('NAME')]
 
             area.geometry = PointGeometry()
@@ -111,20 +112,19 @@ class ShapeFileConverter:
                     hypo_depth = HypocentralDepth()
                     hypo_depth.probability = float(record['WHDEPTH' + str(ind)])
                     hypo_depth.depth = float(record['HYPODEPTH' + str(ind)])
-                    total_weight += hypo_depth.depth
-
-                    if total_weight > 1.0:
-                        raise Exception('Invalid hypo depth weights in area: %(id)' % {'id': area.id})
+                    total_weight += hypo_depth.probability
 
                     area.hypo_depth_dist.append(hypo_depth)
                     ind += 1
                 else:
                     break
 
-            if ind > 1:
-                result.sources.append(area)
+            if total_weight == 1.0:
+                sourceModel.sources.append(area)
+            else:
+                raise Exception('Invalid hypo depth weights in area: %(id)d' % {'id': area.id})
 
-        return result
+        return sourceModel
 
     def __getAreaSource(self, sourceType):
         if sourceType == 'Area':
