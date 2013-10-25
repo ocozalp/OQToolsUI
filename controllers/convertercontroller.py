@@ -6,8 +6,7 @@ from common.xml_utils import write_xml
 import os
 
 
-def convert(sourceFileName, targetFileName, sourceType,
-            nameMappings={'A': 'AGRVAL', 'B': 'BGRVAL', 'ID': 'EMME_IDAS', 'NAME': 'EMME_IDAS'}):
+def convert(sourceFileName, targetFileName, sourceType, nameMappings):
     deserializedShp = convertShapeFileToNrml(sourceFileName, targetFileName, nameMappings, sourceType)
 
     writer = SourceModelXMLWriter(targetFileName)
