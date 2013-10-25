@@ -148,6 +148,9 @@ class InputFileGeneratorWindow(BaseWindow):
         
         self.__minMagnitude = NamedTextArea(otherPrmFrame)
         self.__minMagnitude.initGui(otherPrmFrame, 'Min. Magnitude', 10, 130, textLength=75)
+
+        self.__investigationTime = NamedTextArea(otherPrmFrame)
+        self.__investigationTime.initGui(otherPrmFrame, 'Investigation Time', 10, 170, textLength=75)
         
     def __initActionButtons(self):
         saveButton = gui.QPushButton('Save', self)
@@ -185,6 +188,7 @@ class InputFileGeneratorWindow(BaseWindow):
         parameters['poes'] = str(self.__poes.getText())
         parameters['quantiles'] = str(self.__quantiles.getText())
         parameters['min_magnitude'] = str(self.__minMagnitude.getText())
+        parameters['investigation_time'] = str(self.__investigationTime.getText())
         
         return parameters
     
@@ -196,6 +200,7 @@ class InputFileGeneratorWindow(BaseWindow):
         self.__poes.setText(parameters.get('poes', ''))
         self.__quantiles.setText(parameters.get('quantiles', ''))
         self.__minMagnitude.setText(parameters.get('min_magnitude', ''))
+        self.__investigationTime.setText(parameters.get('investigation_time', ''))
         
         self.__targetGmpeList.clear()
         gmpeList = parameters.get('gmpes_str', '').split(',')
