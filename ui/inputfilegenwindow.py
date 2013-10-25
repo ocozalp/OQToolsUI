@@ -94,48 +94,18 @@ class InputFileGeneratorWindow(BaseWindow):
     def __initGridFrame(self):
         gridFrame = gui.QFrame(self)
         gridFrame.setFrameStyle(gui.QFrame.Box)
-        gridFrame.setGeometry(10, 500, 550, 200)
+        gridFrame.setGeometry(10, 500, 550, 150)
         
-        label = gui.QLabel('Lat. / Lon.', gridFrame)
-        label.setGeometry(10, 10, 80, 30)
-        
-        self.__lat = gui.QLineEdit(gridFrame)
-        self.__lat.setGeometry(100, 10, 50, 30)
-        
-        self.__lon = gui.QLineEdit(gridFrame)
-        self.__lon.setGeometry(160, 10, 50, 30)
-        
-        addButton = gui.QPushButton('Add', gridFrame)
-        addButton.setGeometry(100, 60, 80, 30)
-        addButton.clicked.connect(self.__addCoordinate)
-        
-        removeButton = gui.QPushButton('Remove', gridFrame)
-        removeButton.setGeometry(100, 100, 80, 30)
-        removeButton.clicked.connect(self.__removeCoordinate)
-        
-        self.__gridPoints = gui.QListWidget(gridFrame)
-        self.__gridPoints.setGeometry(220, 10, 150, 120)
+        self.__coordinates = NamedTextArea(gridFrame)
+        self.__coordinates.initGui(gridFrame, 'Lat & Lon.', 10, 10, textLength=250)
         
         self.__gridSpace = NamedTextArea(gridFrame)
-        self.__gridSpace.initGui(gridFrame, 'Grid Space', 10, 150, labelLength=90, textLength=100)
+        self.__gridSpace.initGui(gridFrame, 'Grid Space', 10, 50, textLength=100)
         
-    def __addCoordinate(self):
-        try:
-            textValue = str(self.__lat.text()) + ' ' + str(self.__lon.text())
-            self.__gridPoints.addItem(textValue)
-        except Exception as exc:
-            print exc
-    
-    def __removeCoordinate(self):
-        index = self.__gridPoints.currentRow()
-        
-        if index >= 0:
-            self.__gridPoints.takeItem(index)
-            
     def __initOtherPrmFrame(self):
         otherPrmFrame = gui.QFrame(self)
         otherPrmFrame.setFrameStyle(gui.QFrame.Box)
-        otherPrmFrame.setGeometry(570, 210, 430, 490)
+        otherPrmFrame.setGeometry(570, 210, 430, 440)
         
         self.__period = NamedTextArea(otherPrmFrame)
         self.__period.initGui(otherPrmFrame, 'Periods', 10, 10)
@@ -154,15 +124,15 @@ class InputFileGeneratorWindow(BaseWindow):
         
     def __initActionButtons(self):
         saveButton = gui.QPushButton('Save', self)
-        saveButton.setGeometry(570, 710, 100, 30)
+        saveButton.setGeometry(570, 660, 100, 30)
         saveButton.clicked.connect(self.__saveConfig)
         
         loadButton = gui.QPushButton('Load', self)
-        loadButton.setGeometry(680, 710, 100, 30)
+        loadButton.setGeometry(680, 660, 100, 30)
         loadButton.clicked.connect(self.__loadConfig)
         
         executeButton = gui.QPushButton('Execute', self)
-        executeButton.setGeometry(790, 710, 100, 30)
+        executeButton.setGeometry(790, 660, 100, 30)
         executeButton.clicked.connect(self.__executeConfig)
         
     def __prepareInputs(self):
@@ -176,13 +146,7 @@ class InputFileGeneratorWindow(BaseWindow):
         parameters['gmpes'] = gmpes
         parameters['gmpes_str'] = join([str(g) for g in gmpes], ',')
         
-        grid = []
-        l = self.__gridPoints.count()
-        for i in xrange(l):
-            coordinate = str(self.__gridPoints.item(i).text())
-            grid.append(coordinate)
-            
-        parameters['grid'] = join(grid, ',')
+        parameters['grid'] = self.__coordinates.getText()
         parameters['grid_space'] = str(self.__gridSpace.getText())
         parameters['periods'] = str(self.__period.getText())
         parameters['poes'] = str(self.__poes.getText())
@@ -201,18 +165,14 @@ class InputFileGeneratorWindow(BaseWindow):
         self.__quantiles.setText(parameters.get('quantiles', ''))
         self.__minMagnitude.setText(parameters.get('min_magnitude', ''))
         self.__investigationTime.setText(parameters.get('investigation_time', ''))
-        
+        self.__coordinates.setText(parameters.get('grid', ''))
+
         self.__targetGmpeList.clear()
         gmpeList = parameters.get('gmpes_str', '').split(',')
         for gmpe in gmpeList:
             ind = gmpe.index('(')
             g = Gmpe(gmpe[:ind], float(gmpe[ind+1:len(gmpe)-1]))
             self.__addGmpeToList(g)
-
-        self.__gridPoints.clear()
-        gridPoints = parameters.get('grid', '').split(',')
-        for gridPoint in gridPoints:
-            self.__gridPoints.addItem(gridPoint.strip())
 
     def __saveConfig(self):
         targetFile = gui.QFileDialog.getSaveFileName(self, 'Select File to Save')
