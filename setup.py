@@ -10,11 +10,11 @@ setup(
         },
     install_requires=['openquake.hazardlib<=0.11.0', 'openquake.nrmllib<=0.4.5', 'pyshp'],
     name='OQToolsUI',
-    version='1.0.0',
+    version='1.0.1',
     packages=find_packages(),
     package_data={'oqtools': ['intensityLevels.txt', 'job.ini.template']},
     url='http://github.com/ocozalp/OQToolsUI',
-    license='Apache License Version 2.0',
+    license='GNU Affero General Public License v3',
     author='Orhan Can Ozalp',
     author_email='ozalp.orhan@gmail.com',
     description='UI for openquake'
