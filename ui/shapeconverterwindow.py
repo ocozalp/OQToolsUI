@@ -33,11 +33,11 @@ class ShapeConverterWindow(BaseWindow):
 
         self.aValPrm = NamedTextArea(self)
         self.aValPrm.initGui(self, 'A', 10, 210)
-        self.aValPrm.setText('aGRval')
+        self.aValPrm.setText('AGRVAL')
 
         self.bValPrm = NamedTextArea(self)
         self.bValPrm.initGui(self, 'B', 10, 260)
-        self.bValPrm.setText('bGRval')
+        self.bValPrm.setText('BGRVAL')
 
         self.idPrm = NamedTextArea(self)
         self.idPrm.initGui(self, 'ID', 10, 310)
@@ -45,7 +45,7 @@ class ShapeConverterWindow(BaseWindow):
 
         self.namePrm = NamedTextArea(self)
         self.namePrm.initGui(self, 'Name', 10, 360)
-        self.namePrm.setText('CODE')
+        self.namePrm.setText('EMME_IDAS')
 
         converter = gui.QPushButton('Convert', self)
         converter.setGeometry(410, 410, 120, 40)
