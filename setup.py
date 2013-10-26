@@ -1,30 +1,29 @@
 from setuptools import setup, find_packages
 
-PY_MODULES = ['oqtools.main']
-
 setup(
     entry_points={
         "console_scripts": [
-            "OQToolsUI = oqtools.main:main",
+            "OQToolsUI = oqtoolsui.oqtools.main:main",
             ],
         },
     install_requires=['openquake.hazardlib<=0.11.0', 'openquake.nrmllib<=0.4.5', 'pyshp'],
     name='OQToolsUI',
-    version='1.0.1',
-    packages=find_packages(),
-    package_data={'oqtools': ['intensityLevels.txt', 'job.ini.template']},
+    version='1.0.3',
+    packages=['oqtoolsui', 'oqtoolsui.common', 'oqtoolsui.controllers', 'oqtoolsui.converters', 'oqtoolsui.oqtools',
+              'oqtoolsui.ui'],
+    package_data={'oqtoolsui.oqtools': ['intensityLevels.txt', 'job.ini.template']},
     classifiers=(
-        'Classifier: Development Status :: 4 - Beta',
-        'Classifier: Environment :: X11 Applications :: Qt',
-        'Classifier: Intended Audience :: Education',
-        'Classifier: Intended Audience :: Science/Research',
-        'Classifier: License :: OSI Approved :: GNU Affero General Public License v3',
-        'Classifier: Natural Language :: English',
-        'Classifier: Operating System :: POSIX :: Linux',
-        'Classifier: Programming Language :: Python :: 2.7',
-        'Classifier: Programming Language :: Python :: Implementation :: CPython',
-        'Classifier: Topic :: Education',
-        'Classifier: Topic :: Scientific/Engineering'
+        'Development Status :: 4 - Beta',
+        'Environment :: X11 Applications :: Qt',
+        'Intended Audience :: Education',
+        'Intended Audience :: Science/Research',
+        'License :: OSI Approved :: GNU Affero General Public License v3',
+        'Natural Language :: English',
+        'Operating System :: POSIX :: Linux',
+        'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: Implementation :: CPython',
+        'Topic :: Education',
+        'Topic :: Scientific/Engineering'
     ),
     url='http://github.com/ocozalp/OQToolsUI',
     license='GNU Affero General Public License v3',
