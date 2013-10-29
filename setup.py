@@ -8,7 +8,7 @@ setup(
         },
     install_requires=['openquake.hazardlib<=0.11.0', 'openquake.nrmllib<=0.4.5', 'pyshp'],
     name='OQToolsUI',
-    version='1.0.3',
+    version='1.0.4',
     packages=['oqtoolsui', 'oqtoolsui.common', 'oqtoolsui.controllers', 'oqtoolsui.converters', 'oqtoolsui.oqtools',
               'oqtoolsui.ui'],
     package_data={'oqtoolsui.oqtools': ['intensityLevels.txt', 'job.ini.template']},
