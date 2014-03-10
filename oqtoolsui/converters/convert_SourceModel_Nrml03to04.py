@@ -9,10 +9,10 @@ from oqtoolsui.converters import gml
 from oqtoolsui.converters import nrml03
 
 
-#FAULTING_STYLE_FILE = 'converters/faulting_style_data.csv'
+FAULTING_STYLE_FILE = 'converters/faulting_style_data.csv'
 from oqtoolsui.converters import nrml04
 
-FAULTING_STYLE_FILE = '/home/orhan/Desktop/EMME_AsModel_ver2_2_brc1.csv'
+#FAULTING_STYLE_FILE = '/home/orhan/Desktop/EMME_AsModel_ver2_2_brc1.csv'
 SOURCE_MODEL_NAME = 'SHARE ASC Area Source Model'
 #STRIKES_WEIGHTS = [(0.0, Decimal('0.5')), (90.0, Decimal('0.5'))]
 STRIKES_WEIGHTS = [(0.0, Decimal('1.0'))]
